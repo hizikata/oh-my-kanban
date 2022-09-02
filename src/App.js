@@ -6,6 +6,28 @@ const defaultTodoList = [{ title: '开发任务-1', status: '22-05-22 18:15' }, 
 const defaultOngoingList = [{ title: '开发任务-4', status: '22-05-22 18:15' }, { title: '开发任务-6', status: '22-05-22 18:15' }, { title: '测试任务-2', status: '22-05-22 18:15' }];
 const defaultDoneList = [{ title: '开发任务-2', status: '22-05-22 18:15' }, { title: '测试任务-1', status: '22-05-22 18:15' }];
 
+const KanbanBoard = ({ children }) => (
+  <main className="kanban-board">{children}</main>
+);
+// 为了演示组件树写的没啥必要的子组件
+const CustomTitle = ({ children }) => (
+  <>
+    {children}
+  </>
+);
+
+const KanbanColumn = ({ children, className, title }) => {
+  const combinedClassName = `kanban-column ${className}`
+  return (
+    <section className={combinedClassName}>
+      <h2>{title}</h2>
+      <ul>
+        {children}
+      </ul>
+    </section>
+  )
+};
+
 const KanbanCard = ({ title, status, index }) => {
   return (
     <li key={index} className='kanban-card'>
@@ -55,40 +77,33 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>我的看板</h1>
+        <CustomTitle><h1>我的看板</h1></CustomTitle>
         <img src={logo} className="App-logo" alt="logo" />
       </header>
-      <main className="kanban-board">
-        <section className="kanban-column column-todo">
-          <h2>
+      <KanbanBoard>
+        <KanbanColumn className='column-todo' title={
+          <CustomTitle>
             待处理
             <button onClick={handleAdd} disabled={showAdd}>&#8853; 添加新卡片</button>
-          </h2>
-          <ul>
-            {showAdd && <KanbanNewCard onSubmit={handleSubmit} />}
-            {
-              // 这是注释
-              todoList.map((props, index) => <KanbanCard {...props} index={index} />)
-            }
-          </ul>
-        </section>
-        <section className="kanban-column column-ongoing">
-          <h2>进行中</h2>
-          <ul>
-            {
-              ongoingList.map((props, index) => <KanbanCard {...props} index={index} />)
-            }
-          </ul>
-        </section>
-        <section className="kanban-column column-done">
-          <h2>已完成</h2>
-          <ul>
-            {
-              doneList.map((props, index) => <KanbanCard {...props} index={index} />)
-            }
-          </ul>
-        </section>
-      </main>
+          </CustomTitle>
+        }>
+          {showAdd && <KanbanNewCard onSubmit={handleSubmit} />}
+          {
+            // 这是注释
+            todoList.map((props, index) => <KanbanCard {...props} index={index} />)
+          }
+        </KanbanColumn>
+        <KanbanColumn className='column-ongoing' title='进行中'>
+          {
+            ongoingList.map((props, index) => <KanbanCard {...props} index={index} />)
+          }
+        </KanbanColumn>
+        <KanbanColumn className='column-done' title='已完成'>
+          {
+            doneList.map((props, index) => <KanbanCard {...props} index={index} />)
+          }
+        </KanbanColumn>
+      </KanbanBoard>
     </div>
   );
 }
