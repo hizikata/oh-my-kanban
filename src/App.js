@@ -39,8 +39,8 @@ const KanbanNewCard = ({ onSubmit }) => {
 function App() {
   const [showAdd, setShowAdd] = useState(false);
   const [todoList, setTodoList] = useState(defaultTodoList);
-  const [ongoingList, setOngoingList] = useState(defaultOngoingList);
-  const [doneList, setDoneList] = useState(defaultDoneList);
+  const [ongoingList] = useState(defaultOngoingList);
+  const [doneList] = useState(defaultDoneList);
   const handleAdd = (evt) => {
     setShowAdd(true);
   }
@@ -67,6 +67,7 @@ function App() {
           <ul>
             {showAdd && <KanbanNewCard onSubmit={handleSubmit} />}
             {
+              // 这是注释
               todoList.map((props, index) => <KanbanCard {...props} index={index} />)
             }
           </ul>
