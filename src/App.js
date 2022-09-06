@@ -28,9 +28,9 @@ const KanbanColumn = ({ children, className, title }) => {
   )
 };
 
-const KanbanCard = ({ title, status, index }) => {
+const KanbanCard = ({ title, status }) => {
   return (
-    <li key={index} className='kanban-card'>
+    <li className='kanban-card'>
       <div className='card-title'>{title}</div>
       <div className='card-status'>{status}</div>
     </li>
@@ -90,17 +90,17 @@ function App() {
           {showAdd && <KanbanNewCard onSubmit={handleSubmit} />}
           {
             // 这是注释
-            todoList.map((props, index) => <KanbanCard {...props} index={index} />)
+            todoList.map((props, index) => <KanbanCard key={props.title} {...props} index={index} />)
           }
         </KanbanColumn>
         <KanbanColumn className='column-ongoing' title='进行中'>
           {
-            ongoingList.map((props, index) => <KanbanCard {...props} index={index} />)
+            ongoingList.map((props, index) => <KanbanCard key={props.title} {...props} index={index} />)
           }
         </KanbanColumn>
         <KanbanColumn className='column-done' title='已完成'>
           {
-            doneList.map((props, index) => <KanbanCard {...props} index={index} />)
+            doneList.map((props, index) => <KanbanCard key={props.title} {...props} index={index} />)
           }
         </KanbanColumn>
       </KanbanBoard>
