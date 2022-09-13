@@ -1,13 +1,24 @@
+
+/** @jsxImportSource @emotion/react */
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
+
+import { css } from '@emotion/react'
 
 const defaultTodoList = [{ title: '开发任务-1', status: '22-05-22 18:15' }, { title: '开发任务-3', status: '22-05-22 18:15' }, { title: '开发任务-5', status: '22-05-22 18:15' }, { title: '测试任务-3', status: '22-05-22 18:15' }];
 const defaultOngoingList = [{ title: '开发任务-4', status: '22-05-22 18:15' }, { title: '开发任务-6', status: '22-05-22 18:15' }, { title: '测试任务-2', status: '22-05-22 18:15' }];
 const defaultDoneList = [{ title: '开发任务-2', status: '22-05-22 18:15' }, { title: '测试任务-1', status: '22-05-22 18:15' }];
 
 const KanbanBoard = ({ children }) => (
-  <main className="kanban-board">{children}</main>
+  // <main className="kanban-board">{children}</main>
+  <main css={css`
+    flex: 10;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin: 0 1rem 1rem;
+  `}>{children}</main>
 );
 // 为了演示组件树写的没啥必要的子组件
 const CustomTitle = ({ children }) => (
@@ -17,9 +28,40 @@ const CustomTitle = ({ children }) => (
 );
 
 const KanbanColumn = ({ children, className, title }) => {
-  const combinedClassName = `kanban-column ${className}`
+  // const combinedClassName = `kanban-column ${className}`;
   return (
-    <section className={combinedClassName}>
+    <section className={className} css={css`
+      flex: 1 1;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid gray;
+      border-radius: 1rem;
+
+      &>h2{
+        margin:0.6rem 1rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 1px solid gray;
+
+        &>button{
+          float: right;
+          margin-top: 0.2rem;
+          padding:0.2rem 0.5rem;
+          border: 0;
+          border-radius: 1rem;
+          height: 1.8rem;
+          line-height: 1rem;
+          font-size: 1rem;
+  }
+      }
+
+      &>ul{
+        flex:1;
+        flex-basis: 0;
+        margin:1rem;
+        padding:0;
+        overflow: auto;
+      }
+    `}>
       <h2>{title}</h2>
       <ul>
         {children}
