@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-const defaultTodoList = [{ title: '开发任务-1', status: '2022-05-22 18:15' }, { title: '开发任务-3', status: '2022-06-22 18:15' }, { title: '开发任务-5', status: '2022-07-22 18:15' }, { title: '测试任务-3', status: '2022-08-22 18:15' }];
+const defaultTodoList = [{ title: '开发任务-1', status: '2022-09-15 21:05' }, { title: '开发任务-3', status: '2022-06-22 18:15' }, { title: '开发任务-5', status: '2022-07-22 18:15' }, { title: '测试任务-3', status: '2022-08-22 18:15' }];
 const defaultOngoingList = [{ title: '开发任务-4', status: '2022-06-12 18:15' }, { title: '开发任务-6', status: '2022-05-22 18:15' }, { title: '测试任务-2', status: '2022-05-22 18:15' }];
 const defaultDoneList = [{ title: '开发任务-2', status: '2022-05-22 18:15' }, { title: '测试任务-1', status: '2022-05-22 18:15' }];
 
@@ -48,7 +48,7 @@ const KanbanCard = ({ title, status }) => {
         relativeTime = `${Math.ceil(timePassed / DAY)} 天前`;
       }
       setDisplayTime(relativeTime);
-      console.log('updating...')
+      // console.log('updating...')
     };
     const intervalId = setInterval(updateDisplayTime, UPDATE_INTERVAL);
     updateDisplayTime();
@@ -72,15 +72,26 @@ const KanbanNewCard = ({ onSubmit }) => {
   }
   const handleKeyDown = (evt) => {
     if (evt.key === 'Enter') {
+      // setTitle(evt.target.value);
       console.log('enter trigger !!');
+      // onsubmit(title);
       onSubmit(title)
     }
   }
+
+  const inputRef = useRef(null);
+  useEffect(() => {
+    const defaultTitle = 'hello world !!!'
+    inputRef.current.value = defaultTitle;
+    setTitle(defaultTitle);
+    inputRef.current.focus();
+    inputRef.current.select();
+  }, [])
   return (
     <li className='kanban-card'>
       <h3>添加新卡片</h3>
       <div className='card-title'>
-        <input type='text' value={title} onChange={handleChange} onKeyDown={handleKeyDown} />
+        <input type='text' ref={inputRef} value={title} onChange={handleChange} onKeyDown={handleKeyDown} />
       </div>
     </li>
   )
@@ -96,8 +107,9 @@ function App() {
   }
   const handleSubmit = (title) => {
     // todoList.unshift({ title, status: new Date().toDateString() })
+    const addItem = { title, status: new Date().toLocaleString() }
     setTodoList([
-      { title, status: new Date().toDateString() },
+      addItem,
       ...todoList
     ])
     setShowAdd(false);
