@@ -52,7 +52,7 @@ const KanbanCard = ({ title, status }) => {
     };
     const intervalId = setInterval(updateDisplayTime, UPDATE_INTERVAL);
     updateDisplayTime();
-
+    // 副作用回调函数的返回值也是一个函数，叫做清除函数
     return function cleanup() {
       clearInterval(intervalId);
     };
