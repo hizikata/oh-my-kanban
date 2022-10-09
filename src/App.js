@@ -5,21 +5,12 @@ import './App.css';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { css } from '@emotion/react'
+import KanbanBoard from './KanbanBoard';
 
 const defaultTodoList = [{ title: '开发任务-1', status: '2022-05-22 18:15' }, { title: '开发任务-3', status: '2022-05-22 18:15' }, { title: '开发任务-5', status: '2022-05-22 18:15' }, { title: '测试任务-3', status: '2022-05-22 18:15' }];
 const defaultOngoingList = [{ title: '开发任务-4', status: '22-05-22 18:15' }, { title: '开发任务-6', status: '2022-05-22 18:15' }, { title: '测试任务-2', status: '2022-05-22 18:15' }];
 const defaultDoneList = [{ title: '开发任务-2', status: '2022-05-22 18:15' }, { title: '测试任务-1', status: '2022-05-22 18:15' }];
 
-const KanbanBoard = ({ children }) => (
-  // <main className="kanban-board">{children}</main>
-  <main css={css`
-    flex: 10;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    margin: 0 1rem 1rem;
-  `}>{children}</main>
-);
 // 为了演示组件树写的没啥必要的子组件
 const CustomTitle = ({ children }) => (
   <>
