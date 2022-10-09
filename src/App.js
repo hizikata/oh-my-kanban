@@ -6,9 +6,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { css } from '@emotion/react'
 
-const defaultTodoList = [{ title: '开发任务-1', status: '22-05-22 18:15' }, { title: '开发任务-3', status: '22-05-22 18:15' }, { title: '开发任务-5', status: '22-05-22 18:15' }, { title: '测试任务-3', status: '22-05-22 18:15' }];
-const defaultOngoingList = [{ title: '开发任务-4', status: '22-05-22 18:15' }, { title: '开发任务-6', status: '22-05-22 18:15' }, { title: '测试任务-2', status: '22-05-22 18:15' }];
-const defaultDoneList = [{ title: '开发任务-2', status: '22-05-22 18:15' }, { title: '测试任务-1', status: '22-05-22 18:15' }];
+const defaultTodoList = [{ title: '开发任务-1', status: '2022-05-22 18:15' }, { title: '开发任务-3', status: '2022-05-22 18:15' }, { title: '开发任务-5', status: '2022-05-22 18:15' }, { title: '测试任务-3', status: '2022-05-22 18:15' }];
+const defaultOngoingList = [{ title: '开发任务-4', status: '22-05-22 18:15' }, { title: '开发任务-6', status: '2022-05-22 18:15' }, { title: '测试任务-2', status: '2022-05-22 18:15' }];
+const defaultDoneList = [{ title: '开发任务-2', status: '2022-05-22 18:15' }, { title: '测试任务-1', status: '2022-05-22 18:15' }];
 
 const KanbanBoard = ({ children }) => (
   // <main className="kanban-board">{children}</main>
@@ -139,11 +139,25 @@ const KanbanNewCard = ({ onSubmit }) => {
   )
 }
 
+const DATA_STORE_KEY = 'kanban-data-store';
+
 function App() {
   const [showAdd, setShowAdd] = useState(false);
   const [todoList, setTodoList] = useState(defaultTodoList);
-  const [ongoingList] = useState(defaultOngoingList);
-  const [doneList] = useState(defaultDoneList);
+  const [ongoingList, setOngoingList] = useState(defaultOngoingList);
+  const [doneList, setDoneList] = useState(defaultDoneList);
+  useEffect(() => {
+    const data = window.localStorage.getItem(DATA_STORE_KEY);
+    setTimeout(() => {
+      if (data) {
+        const kanbanColumnData = JSON.parse(data);
+        setTodoList(kanbanColumnData.todoList);
+        setOngoingList(kanbanColumnData.ongoingList);
+        setDoneList(kanbanColumnData.doneList)
+      }
+    }, 100);
+  }, [])
+
   const handleAdd = (evt) => {
     setShowAdd(true);
   }
@@ -156,10 +170,24 @@ function App() {
     ])
     setShowAdd(false);
   }
+
+  const handleSaveAll = () => {
+    const data = JSON.stringify({
+      todoList,
+      ongoingList,
+      doneList
+    })
+    window.localStorage.setItem(DATA_STORE_KEY, data)
+    alert('数据保存成功！！')
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <CustomTitle><h1>我的看板</h1></CustomTitle>
+        <CustomTitle>
+          <h1>我的看板
+            <button onClick={handleSaveAll}>保存所有卡片</button>
+          </h1></CustomTitle>
         <img src={logo} className="App-logo" alt="logo" />
       </header>
       <KanbanBoard>
